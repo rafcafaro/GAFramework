@@ -32,13 +32,7 @@ public abstract class Genotype implements Comparable<Genotype>{
 	public int compareTo(Genotype other) {
 		return Double.compare(this.fitness, other.fitness);
 	}
-	/**
-	 * Select a pair of Genotype from a population.
-	 * This pair could be used to crossover the two genotypes.
-	 * @param population
-	 * @return a pair of genotypes
-	 */
-	public abstract Pair<Genotype> selection(Genotype[] population);
+	
 
 	
 }
