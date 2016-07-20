@@ -1,9 +1,6 @@
 package eigthqueentest;
 
 import java.util.ArrayList;
-import java.util.Random;
-
-import javax.xml.stream.events.EndDocument;
 
 import algorithm.GeneticAlgorithm;
 import algorithm.Genotype;
