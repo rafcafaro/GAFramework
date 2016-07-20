@@ -11,6 +11,8 @@ import algorithm.Genotype;
 public class PermutationGenotype extends Genotype {
 
 	private int[] genes;
+
+
 	double crossoverProbability = 0.5D;
 	/*
 	 * Set of integers used in the permutation
@@ -105,8 +107,13 @@ public class PermutationGenotype extends Genotype {
 	 * @param indexToSwap
 	 */
 	private void swapRandomly(int[] array, int indexToSwap) {
-		int swapPosition = (int) (Math.random() * this.genes.length);
+		int swapPosition = (int) (Math.random() * (double)this.genes.length);
 		swap(this.genes, indexToSwap, swapPosition);
 	}
-
+	/**
+	 * @return the genes
+	 */
+	public int[] getGenes() {
+		return genes;
+	}
 }

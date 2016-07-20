@@ -1,13 +1,15 @@
 package algorithm;
 
+import java.util.ArrayList;
+
 public class GeneticAlgorithm <T extends Genotype> extends Thread {
 
 	private double currentFitness, targetFitness;
 	private long currentGeneration, maxGenerations;
-	private Population<T>[] populations;
-	private FitnessFunction<T> fitness;
+	private ArrayList<Population<T>> populations;
+
 	/**
-	 * @return the bestSolutionFound. Can be null if algorithm has not been started yet
+	 * @return the bestSolutioArrayList<Population<T>> populations;nFound. Can be null if algorithm has not been started yet
 	 */
 	public Genotype getBestSolutionFound() {
 		return bestSolutionFound;
@@ -15,25 +17,28 @@ public class GeneticAlgorithm <T extends Genotype> extends Thread {
 
 	private Genotype bestSolutionFound;
 
-	public GeneticAlgorithm(double minFitnessToStop,int populationSize,FitnessFunction<T> fitness) {
+	public GeneticAlgorithm(ArrayList<Population<T>> populations,double minFitnessToStop) {
 		super();
-		init(minFitnessToStop,populationSize,-1,fitness);
+		init(populations,minFitnessToStop,-1);
 	}
 
-	public GeneticAlgorithm(double objectiveFitness,int populationSize, long maxGenerations,FitnessFunction<T> fitness) {
+	public GeneticAlgorithm(ArrayList<Population<T>> populations,double minFitnessToStop, long maxGenerations) {
 		super();
-		init(objectiveFitness,populationSize,maxGenerations,fitness);
+		init(populations,minFitnessToStop,maxGenerations);
 	}
-	private void init(double objectiveFitness,int popSize, long maxGenerations,FitnessFunction<T> fitness)
+	private void init(ArrayList<Population<T>> populations,double objectiveFitness,long maxGenerations)
 	{
 		this.currentFitness = Double.MAX_VALUE;
 		this.targetFitness = objectiveFitness;
 		this.maxGenerations = maxGenerations;
 		this.currentGeneration = 0;
-		this.fitness = fitness;
 		//TODO: instantiate populations!
-		this.populations = new Population[popSize];
+		this.populations = populations;
 		this.bestSolutionFound =null;
+		//init randomly the starting populations
+		for (Population<T> population : populations) {
+			population.randomInit();
+		}
 	}
 
 	@Override
@@ -41,7 +46,7 @@ public class GeneticAlgorithm <T extends Genotype> extends Thread {
 		super.run();
 		while (!isTerminationConditionMet()) {
 			//evolutionary algorithm using populations
-			for (Population population : populations) {
+			for (Population<T> population : populations) {
 				try {
 					population.evolve();
 				} catch (Exception e) {
@@ -49,13 +54,13 @@ public class GeneticAlgorithm <T extends Genotype> extends Thread {
 					System.out.println(e.getMessage());
 					System.out.println("Trying to continue evolution process...");
 				}
-				Genotype popBest = population.getBestGenotype();
-				double cost = popBest.getFitness();
+				Genotype bestOfPopulation = population.getBestGenotype();
+				double cost = bestOfPopulation.getFitness();
 				//keep track of the best solution found until now
 				if(this.currentFitness > cost)
 				{
 					this.currentFitness = cost;
-					bestSolutionFound = popBest;
+					bestSolutionFound = bestOfPopulation;
 				}
 				currentGeneration++;
 			}

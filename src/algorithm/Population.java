@@ -10,12 +10,12 @@ public class Population<T extends Genotype> {
 	 * population will have a fixed size
 	 */
 	private T[] genotypes;
-	private SelectionProcedure<T> selection;
+	private SelectionProcedure selection;
 	private FitnessFunction<T> fitness;
 	boolean isSortedByFitness;
 	private double mutationProbability;
 
-	public Population(T[] genotypes, SelectionProcedure<T> selection, FitnessFunction<T> fitness) {
+	public Population(T[] genotypes, SelectionProcedure selection, FitnessFunction<T> fitness) {
 		this.genotypes = genotypes;
 		isSortedByFitness = false;
 		this.selection = selection;
@@ -90,7 +90,7 @@ public class Population<T extends Genotype> {
 			//Note:Add "Elitism"
 			
 			//Selection
-			Pair<T> selected = selection.select(genotypes);
+			Pair<Genotype> selected = selection.select(genotypes);
 			//Crossover
 			T offspring = (T) selected.first.crossover(selected.second);
 			//Mutation
