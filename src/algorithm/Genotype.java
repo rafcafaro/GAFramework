@@ -6,20 +6,21 @@ package algorithm;
 public abstract class Genotype implements Comparable<Genotype>{
 	
 	
-	private double fitness;
+	protected double fitness;
 	
 	public abstract void randomInit();
 	/**
 	 * 
 	 * @param probability that a single gene has to mutate
 	 */
-	public abstract void mutate(float probability);
+	public abstract void mutate(double probability);
 	/**
 	 * Crossover between two genotypes
 	 * @param other
 	 * @return the generated offspring
+	 * @throws Exception if there is an inconsistent "other" genotype
 	 */
-	public abstract Genotype crossover(Genotype other);
+	public abstract Genotype crossover(Genotype other) throws Exception;
 	
 	public double getFitness() {
 		return fitness;

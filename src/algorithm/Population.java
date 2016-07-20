@@ -5,25 +5,28 @@ import java.util.Arrays;
 /**
  * Representation of a collection of genotypes
  */
-public class Population {
+public class Population<T extends Genotype> {
 	/**
 	 * population will have a fixed size
 	 */
-	private Genotype[] genotypes;
-	private SelectionProcedure selection;
+	private T[] genotypes;
+	private SelectionProcedure<T> selection;
+	private FitnessFunction<T> fitness;
 	boolean isSortedByFitness;
-	private float mutationProbability;
+	private double mutationProbability;
 
-	public Population(Genotype[] genotypes, SelectionProcedure selection) {
+	public Population(T[] genotypes, SelectionProcedure<T> selection, FitnessFunction<T> fitness) {
 		this.genotypes = genotypes;
 		isSortedByFitness = false;
 		this.selection = selection;
-		mutationProbability = (float) 0.01;
+		this.fitness = fitness;
+		mutationProbability = (double) 0.01;
 	}
 
 	public void randomInit() {
-		for (Genotype genotype : genotypes) {
+		for (T genotype : genotypes) {
 			genotype.randomInit();
+			genotype.setFitness(fitness.calculateFitness(genotype));
 		}
 		isSortedByFitness = false;
 	}
@@ -62,7 +65,7 @@ public class Population {
 		return this.genotypes.length;
 	}
 	
-	private void updateGenotypes(Genotype[] newGenotypes){
+	private void updateGenotypes(T[] newGenotypes){
 		this.genotypes = newGenotypes;
 		this.isSortedByFitness = false;
 	}
@@ -72,9 +75,11 @@ public class Population {
 	 * -Selection;
 	 * -Crossover;
 	 * -Mutation;
+	 * @throws Exception 
 	 * 
 	 */
-	public void evolve()
+	@SuppressWarnings("unchecked")
+	public void evolve() throws Exception
 	{
 		
 		Genotype[] newPopulation = new Genotype[this.genotypes.length];
@@ -85,14 +90,16 @@ public class Population {
 			//Note:Add "Elitism"
 			
 			//Selection
-			Pair<Genotype> selected = selection.select(genotypes);
+			Pair<T> selected = selection.select(genotypes);
 			//Crossover
-			Genotype offspring = selected.first.crossover(selected.second);
+			T offspring = (T) selected.first.crossover(selected.second);
 			//Mutation
 			offspring.mutate(mutationProbability);
+			offspring.setFitness(fitness.calculateFitness(offspring));
+
 			newPopulation[i] = offspring;
 		}
 		
-		updateGenotypes(newPopulation);	
+		updateGenotypes((T[]) newPopulation);	
 	}
 }
