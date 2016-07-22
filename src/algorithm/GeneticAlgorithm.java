@@ -57,7 +57,8 @@ public class GeneticAlgorithm<T extends Genotype> extends Thread {
 					population.evolve();
 				} catch (Exception e) {
 					System.out.println("Population evolve method problem:");
-					System.out.println(e.getMessage());
+					// System.out.println(e.getStackTrace());
+					e.printStackTrace();
 					System.out.println("Trying to continue evolution process...");
 				}
 				Genotype bestOfPopulation = population.getBestGenotype();
@@ -67,13 +68,16 @@ public class GeneticAlgorithm<T extends Genotype> extends Thread {
 					this.currentFitness = cost;
 					bestSolutionFound = bestOfPopulation;
 				}
-				if(isDebugToBePrinted())
+				if (isDebugToBePrinted())
 					System.out.println(population);
 			}
 			currentGeneration++;
-			//print only if needed
-			printDebugInfo();
+			// print only if needed
+			if (isDebugToBePrinted())
+				printDebugInfo();
 		}
+		// print final iteration
+		printDebugInfo();
 	}
 
 	private boolean isTerminationConditionMet() {
@@ -83,7 +87,9 @@ public class GeneticAlgorithm<T extends Genotype> extends Thread {
 	/**
 	 * 
 	 * @param isDebugActive
-	 * @param debugPrintGenerations print debug (if active) every debugPrintGenerations generations
+	 * @param debugPrintGenerations
+	 *            print debug (if active) every debugPrintGenerations
+	 *            generations
 	 */
 	public void setDebug(boolean isDebugActive, long debugPrintGenerations) {
 		this.debugActive = isDebugActive;
@@ -95,13 +101,12 @@ public class GeneticAlgorithm<T extends Genotype> extends Thread {
 	}
 
 	private void printDebugInfo() {
-		if (isDebugToBePrinted()) {
-			System.out
-					.println("-----\nGeneration: " + this.currentGeneration + "\nCurrent best fitness: " + this.currentFitness+"\n");
-		}
+		System.out.println("-----\nGeneration: " + this.currentGeneration + "\nCurrent best fitness: "
+				+ this.currentFitness + "\n");
+
 	}
-	private boolean isDebugToBePrinted()
-	{
+
+	private boolean isDebugToBePrinted() {
 		return isDebugActive() && (currentGeneration % debugPrintGenerations == 0);
 	}
 

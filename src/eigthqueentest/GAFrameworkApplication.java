@@ -7,6 +7,7 @@ import algorithm.Genotype;
 import algorithm.Population;
 import genotypes.PermutationGenotype;
 import selection.RandomSelection;
+import selection.RouletteWheelSelection;
 
 public class GAFrameworkApplication {
 
@@ -25,7 +26,7 @@ public class GAFrameworkApplication {
 			for (int j = 0; j < populationSize; j++) {
 				genotypes[j] = new PermutationGenotype(numberOfGenes);
 			}
-			populations.add(new Population<PermutationGenotype>(genotypes,new RandomSelection(),new EightQueenFitness()));
+			populations.add(new Population<PermutationGenotype>(genotypes,new RouletteWheelSelection(),new EightQueenFitness()));
 		}
 		long startTime=0,endTime = 0;
 		algorithm = new GeneticAlgorithm<>(populations, targetFitness);

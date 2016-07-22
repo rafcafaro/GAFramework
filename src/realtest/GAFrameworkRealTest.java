@@ -13,8 +13,8 @@ public class GAFrameworkRealTest {
 	public static void main(String[] args) {
 		int populationSize = 20;
 		int numberOfPopulations = 1;
-		int numberOfGenes = 2;
-		double targetFitness = 0.0001;
+		int numberOfGenes = 8;
+		double targetFitness = 0.000001;
 		boolean isDebugActive = true;
 		long debugPrintGenerations = 100000L;
 		GeneticAlgorithm<RealGenotype> algorithm;
