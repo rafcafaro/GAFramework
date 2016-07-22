@@ -6,15 +6,15 @@ import algorithm.GeneticAlgorithm;
 import algorithm.Genotype;
 import algorithm.Population;
 import genotypes.RealGenotype;
-import selection.RandomSelection;
+import selection.*;
 
 public class GAFrameworkRealTest {
 
 	public static void main(String[] args) {
-		int populationSize = 10;
+		int populationSize = 20;
 		int numberOfPopulations = 1;
-		int numberOfGenes = 8;
-		double targetFitness = 0.1;
+		int numberOfGenes = 2;
+		double targetFitness = 0.0001;
 		boolean isDebugActive = true;
 		long debugPrintGenerations = 100000L;
 		GeneticAlgorithm<RealGenotype> algorithm;
@@ -25,7 +25,7 @@ public class GAFrameworkRealTest {
 			for (int j = 0; j < populationSize; j++) {
 				genotypes[j] = new RealGenotype(numberOfGenes);
 			}
-			populations.add(new Population<RealGenotype>(genotypes,new RandomSelection(),new RealFunctionFitness()));
+			populations.add(new Population<RealGenotype>(genotypes, new RouletteWheelSelection(),new RealFunctionFitness()));
 		}
 		long startTime=0,endTime = 0;
 		algorithm = new GeneticAlgorithm<>(populations, targetFitness);
