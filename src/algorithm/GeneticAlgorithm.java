@@ -36,7 +36,6 @@ public class GeneticAlgorithm<T extends Genotype> extends Thread {
 		this.targetFitness = objectiveFitness;
 		this.maxGenerations = maxGenerations;
 		this.currentGeneration = 0;
-		// TODO: instantiate populations!
 		this.populations = populations;
 		this.bestSolutionFound = null;
 		// init randomly the starting populations

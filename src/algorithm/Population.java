@@ -14,6 +14,7 @@ public class Population<T extends Genotype> {
 	private FitnessFunction<T> fitness;
 	boolean isSortedByFitness;
 	private double mutationProbability;
+	private double elitismFactor;
 
 	public Population(T[] genotypes, SelectionProcedure selection, FitnessFunction<T> fitness) {
 		this.genotypes = genotypes;
@@ -21,6 +22,7 @@ public class Population<T extends Genotype> {
 		this.selection = selection;
 		this.fitness = fitness;
 		mutationProbability = (double) 0.01;
+		elitismFactor = (double) 0.3F;
 	}
 
 	public void randomInit() {
@@ -81,6 +83,7 @@ public class Population<T extends Genotype> {
 	@SuppressWarnings("unchecked")
 	public void evolve() throws Exception {
 
+		int elitismIndex = (int) ((float) this.genotypes.length * elitismFactor);
 		Genotype[] newPopulation = new Genotype[this.genotypes.length];
 		// sort by fitness (lowest/best is first)
 		sortGenotypes();
@@ -95,32 +98,35 @@ public class Population<T extends Genotype> {
 		// generate another population
 		for (int i = 0; i < selected.length; i++) {
 			// Note:Add "Elitism"
-			
-			//selected array can be filled by user defined class. Check for robustness.
-			if (selected[i] != null) {
-				// Crossover
-				T offspring = (T) selected[i].first.crossover(selected[i].second);
-				// Mutation
-				offspring.mutate(mutationProbability);
-				offspring.setFitness(fitness.calculateFitness(offspring));
+			if (i < elitismIndex)
+				newPopulation[i] = this.genotypes[i];
+			else {
+				// selected array can be filled by user defined class. Check for
+				// robustness.
+				if (selected[i] != null) {
+					// Crossover
+					T offspring = (T) selected[i - elitismIndex].first.crossover(selected[i - elitismIndex].second);
+					// Mutation
+					offspring.mutate(mutationProbability);
+					offspring.setFitness(fitness.calculateFitness(offspring));
 
-				newPopulation[i] = offspring;
+					newPopulation[i] = offspring;
+				}
 			}
 		}
 
 		updateGenotypes((T[]) newPopulation);
 	}
-	
+
 	@Override
-	public String toString()
-	{
-		String s="";
+	public String toString() {
+		String s = "";
 		for (int i = 0; i < genotypes.length; i++) {
-			s+="Genotype:"+i+"\n";
-			s+=genotypes[i]+"\n";
+			s += "Genotype:" + i + "\n";
+			s += genotypes[i] + "\n";
 		}
-		
+
 		return s;
-		
+
 	}
 }
