@@ -15,6 +15,8 @@ public class GAFrameworkApplication {
 		int numberOfPopulations = 1;
 		int numberOfGenes = 8;
 		double targetFitness = 0;
+		boolean isDebugActive = true;
+		long debugPrintGenerations = 1L;
 		GeneticAlgorithm<PermutationGenotype> algorithm;
 		ArrayList<Population<PermutationGenotype>> populations = new ArrayList<Population<PermutationGenotype>>();
 		
@@ -27,6 +29,7 @@ public class GAFrameworkApplication {
 		}
 		long startTime=0,endTime = 0;
 		algorithm = new GeneticAlgorithm<>(populations, targetFitness);
+		algorithm.setDebug(isDebugActive, debugPrintGenerations);
 		algorithm.start();
 		startTime = System.currentTimeMillis();
 		try {

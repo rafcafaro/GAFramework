@@ -3,9 +3,11 @@ package algorithm;
 public interface SelectionProcedure{
 	
 	/**
-	 * Implements the selection of a pair of genotypes to crossover.
+	 * Implements the selection of n pairs of genotypes to crossover.
 	 * @param genotypes is a sorted array, first element has lowest fitness (best score) 
-	 * @return
+	 * @param selected is the output array to fill with new instances of Pair of genotypes. This 
+	 * array will be used to crossover the selected pairs.
+	 *
 	 */
-	Pair<Genotype> select(Genotype[] genotypes);
+	void select(Genotype[] genotypes, Pair<Genotype>[] selected);
 }

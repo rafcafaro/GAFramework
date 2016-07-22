@@ -12,12 +12,13 @@ import algorithm.SelectionProcedure;
 public class RandomSelection implements SelectionProcedure {
 
 	@Override
-	public Pair<Genotype> select(Genotype[] genotypes) {
-		// TODO Auto-generated method stub
-		Pair<Genotype> pair = new Pair<>();
-		pair.first = getRandomGenotype(genotypes);
-		pair.second = getRandomGenotype(genotypes);
-		return pair;
+	public void select(Genotype[] genotypes, Pair<Genotype>[] selected) {
+		for (int i = 0; i < selected.length; i++) {
+			Pair<Genotype> pair = new Pair<>();
+			pair.first = getRandomGenotype(genotypes);
+			pair.second = getRandomGenotype(genotypes);
+			selected[i] = pair;
+		}
 	}
 	
 	private Genotype getRandomGenotype(Genotype[] genotypes)
@@ -25,5 +26,7 @@ public class RandomSelection implements SelectionProcedure {
 		int randomIndex = (int) (Math.random()*(double)genotypes.length);
 		return genotypes[randomIndex];
 	}
+
+	
 
 }

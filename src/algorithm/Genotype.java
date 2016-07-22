@@ -34,6 +34,16 @@ public abstract class Genotype implements Comparable<Genotype>{
 		return Double.compare(this.fitness, other.fitness);
 	}
 	
+	/**
+	 * Default implementation. Actual implementation of genotype 
+	 * could define their own debug print
+	 */
+	@Override
+	public String toString()
+	{
+		return "Current fitness: "+this.fitness;
+	}
+	
 
 	
 }

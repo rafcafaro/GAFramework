@@ -56,50 +56,71 @@ public class Population<T extends Genotype> {
 			isSortedByFitness = true;
 		}
 	}
+
 	/**
 	 * Population size
+	 * 
 	 * @return numbero of sample in the population
 	 */
-	public int getSize()
-	{
+	public int getSize() {
 		return this.genotypes.length;
 	}
-	
-	private void updateGenotypes(T[] newGenotypes){
+
+	private void updateGenotypes(T[] newGenotypes) {
 		this.genotypes = newGenotypes;
 		this.isSortedByFitness = false;
 	}
-	
+
 	/**
-	 * Perform one step of evolution of this population:
-	 * -Selection;
-	 * -Crossover;
+	 * Perform one step of evolution of this population: -Selection; -Crossover;
 	 * -Mutation;
-	 * @throws Exception 
+	 * 
+	 * @throws Exception
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public void evolve() throws Exception
-	{
-		
-		Genotype[] newPopulation = new Genotype[this.genotypes.length];
-		//sort by fitness (lowest/best is first)
-		sortGenotypes();
-		//generate another population
-		for (int i = 0; i < genotypes.length; i++) {
-			//Note:Add "Elitism"
-			
-			//Selection
-			Pair<Genotype> selected = selection.select(genotypes);
-			//Crossover
-			T offspring = (T) selected.first.crossover(selected.second);
-			//Mutation
-			offspring.mutate(mutationProbability);
-			offspring.setFitness(fitness.calculateFitness(offspring));
+	public void evolve() throws Exception {
 
-			newPopulation[i] = offspring;
+		Genotype[] newPopulation = new Genotype[this.genotypes.length];
+		// sort by fitness (lowest/best is first)
+		sortGenotypes();
+
+		// constrain the number of pairs to generate for the Crossover operation
+		int desiredPairCount = this.genotypes.length;
+		Pair<Genotype>[] selected = new Pair[desiredPairCount];
+
+		// Selection, save new pairs to selected array
+		selection.select(genotypes, selected);
+
+		// generate another population
+		for (int i = 0; i < selected.length; i++) {
+			// Note:Add "Elitism"
+			
+			//selected array can be filled by user defined class. Check for robustness.
+			if (selected[i] != null) {
+				// Crossover
+				T offspring = (T) selected[i].first.crossover(selected[i].second);
+				// Mutation
+				offspring.mutate(mutationProbability);
+				offspring.setFitness(fitness.calculateFitness(offspring));
+
+				newPopulation[i] = offspring;
+			}
+		}
+
+		updateGenotypes((T[]) newPopulation);
+	}
+	
+	@Override
+	public String toString()
+	{
+		String s="";
+		for (int i = 0; i < genotypes.length; i++) {
+			s+="Genotype:"+i+"\n";
+			s+=genotypes[i]+"\n";
 		}
 		
-		updateGenotypes((T[]) newPopulation);	
+		return s;
+		
 	}
 }
