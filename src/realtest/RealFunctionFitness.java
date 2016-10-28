@@ -11,11 +11,7 @@ public class RealFunctionFitness implements FitnessFunction<RealGenotype> {
 		double[] genes = genotype.getGenes();
 		double f=0; // value of the function
 		for (int i = 0; i < genes.length; i++) {
-<<<<<<< Updated upstream
-			f += Math.pow(genes[i]-0.1*i,2);
-=======
 			f += (genes[i]-0.1*i)*(genes[i]-0.1*i);
->>>>>>> Stashed changes
 		}
 		return f;
 	}
