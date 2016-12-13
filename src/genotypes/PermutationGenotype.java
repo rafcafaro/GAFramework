@@ -12,7 +12,7 @@ public class PermutationGenotype extends Genotype {
 
 	private int[] genes;
 
-
+	// TODO: this parameter should be configurable
 	double crossoverProbability = 0.5D;
 	/*
 	 * Set of integers used in the permutation

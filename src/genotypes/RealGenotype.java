@@ -10,8 +10,11 @@ public class RealGenotype extends Genotype {
 
 	private double[] genes;
 
-	double crossoverProbability = 0.5D;
-
+	// TODO: this parameters should be configurable
+	double crossoverProbability = 0.5D; 
+	double mutationStep = 0.01;
+	// used to reduce computation each time a mutation is needed
+	private double mutationStepHalf = mutationStep / 2;
 	/**
 	 * Genes will be an array of real numbers
 	 * 
@@ -32,10 +35,11 @@ public class RealGenotype extends Genotype {
 
 	@Override
 	public void mutate(double probability) {
+		 
 		for (int i = 0; i < genes.length; i++) {
 			if (Math.random() <= probability) {
-				// Perturb by real random from 0 to 1
-				genes[i] = Math.random();
+				// Perturb by random value from -mutationStepHalf to mutationStepHalf
+				genes[i] += Math.random() * mutationStep - mutationStepHalf;
 			}
 		}
 	}
@@ -45,7 +49,7 @@ public class RealGenotype extends Genotype {
 		Genotype offspring = other;
 		if (other instanceof RealGenotype) {
 			// Select a random index for the cross-over point
-			int randomIndex = genes.length/2;
+			int randomIndex = (int) (Math.random() * genes.length);
 			double[] otherGenes = ((RealGenotype) other).genes;
 			double[] offspringGenes = new double[this.genes.length];
 			for(int i=0; i<=randomIndex; i++) {
@@ -58,7 +62,8 @@ public class RealGenotype extends Genotype {
 			((RealGenotype) offspring).genes = offspringGenes;
 			
 		} else {
-
+			throw new Exception("crossover called on incompatible type of genotype."
+					+ " Expected: RealGenotype");
 		}
 		return offspring;
 	}

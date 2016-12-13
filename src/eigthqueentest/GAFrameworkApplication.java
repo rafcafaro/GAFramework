@@ -6,7 +6,6 @@ import algorithm.GeneticAlgorithm;
 import algorithm.Genotype;
 import algorithm.Population;
 import genotypes.PermutationGenotype;
-import selection.RandomSelection;
 import selection.RouletteWheelSelection;
 
 public class GAFrameworkApplication {

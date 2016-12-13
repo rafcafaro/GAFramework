@@ -1,12 +1,12 @@
 package selection;
-import java.util.Random;
 import algorithm.Genotype;
 import algorithm.Pair;
 import algorithm.SelectionProcedure;
 
 /**
  * 
- * Implements a totally random selection for crossover
+ * Implements a roulette wheel selection for crossover
+ * (for example @see http://www.obitko.com/tutorials/genetic-algorithms/selection.php)
  *
  */
 public class RouletteWheelSelection implements SelectionProcedure {
